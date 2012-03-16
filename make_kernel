@@ -1,0 +1,32 @@
+#!/bin/bash
+
+#mkdir tmpfs
+#mount -t tmpfs -o size=2G none tmpfs
+#mount -t aufs -o br=tmpfs=rw:linux=rw none linux
+cd /usr/src
+patchck=`ls -1 patch*ck*` || ( wget http://ck.kolivas.org/patches/3.0/3.2/3.2-ck1/patch-3.2-ck1.bz2 && bzip2 -d patch-3.2-ck1.bz2 )
+cd linux
+if [[ -z `ls -1 $patchck` ]] ; then 
+	cp ../$patchck .
+	patch -p1 < $patchck
+fi
+cp ../.config .
+vers=`pwd -P`
+vers=${vers##'/'*'/'}
+vers=${vers##'linux-'}
+make oldconfig
+make -j4
+make modules_install
+make headers_install 
+emerge aufs3 nvidia-drivers openafs-kernel
+make -j4
+make modules_install
+make headers_install 
+mount /boot
+cp arch/x86/boot/bzImage /boot/kernel-$vers-ck
+cd /usr/src
+boot-update
+#umount linux
+#umount tmpfs
+umount /boot
+#rmdir tmpfs
