@@ -15,11 +15,12 @@ vers=`pwd -P`
 vers=${vers##'/'*'/'}
 vers=${vers##'linux-'}
 make oldconfig
-make -j4
+cpus=`cat /proc/cpuinfo | sed '/cpu\ cores[\t\:\ ]*/!d' | sed '1q' | sed 's/cpu\ cores\t\:\ //'`
+make -j$cpus
 make modules_install
 make headers_install 
 emerge aufs3 nvidia-drivers openafs-kernel
-make -j4
+make -j$cpus
 make modules_install
 make headers_install 
 mount /boot
