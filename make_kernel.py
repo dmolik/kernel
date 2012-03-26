@@ -1,10 +1,11 @@
 #!/usr/bin/python3.2
 
-import subprocess
 import urllib
 import bz2
 import os
 import multiprocessing
+import shutil
+import subprocess
 
 def ckpatcher():
   urllib.urlretrieve ("http://ck.kolivas.org/patches/3.0/3.3/3.3-ck1/patch-3.3-ck1.bz2", "/usr/src/patch-3.3-ck1.bz2")
@@ -22,9 +23,14 @@ if not checkck:
 cores = multiprocessing.cpu_count()
 
 os.chdir('/usr/src/linux')
-subprocess.call(['pwd', '-P'])
+
+shutil.copy2('/usr/src/.config', '/usr/src/linux')
 subprocess.call(['make', 'oldconfig'])
-#retcode = subprocess.Popen(["ls","-l1a"], stdout=subprocess.PIPE).communicate()[0]
+shutil.copy2('/usr/src/linux/.config', '/usr/src/')
+
+#retcode = subprocess.Popen(["pwd","-P"], stdout=subprocess.PIPE).communicate()[0]
+#print retcode
+#retcode = subprocess.Popen(["make","oldconfig"], stdout=subprocess.PIPE).communicate()[0]
 #print retcode
 
 #cd /usr/src

@@ -5,4 +5,4 @@ import sys
 
 # some code here
 
-pid = subprocess.Popen([sys.executable, "longtask.py"]) 
+#pid = subprocess.Popen([sys.executable, "longtask.py"]) 
