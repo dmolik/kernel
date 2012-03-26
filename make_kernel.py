@@ -40,7 +40,8 @@ cores = multiprocessing.cpu_count()
 subprocess.call(['make', '-j'+str(cores)])
 
 compileKernel()
-subprocess.call(['emerge', 'aufs3', 'nvidia-drivers', 'openafs-kernel', 'btrfs'])
+# emerge packages that depend on the kernel
+subprocess.call(['emerge', '-q', 'aufs3', 'nvidia-drivers', 'openafs-kernel', 'btrfs-progs' ])
 compileKernel()
 
 subprocess.call(['mount', '/boot'])
