@@ -4,7 +4,7 @@
 #mount -t tmpfs -o size=2G none tmpfs
 #mount -t aufs -o br=tmpfs=rw:linux=rw none linux
 cd /usr/src
-patchck=`ls -1 patch*ck*` || ( wget http://ck.kolivas.org/patches/3.0/3.2/3.2-ck1/patch-3.2-ck1.bz2 && bzip2 -d patch-3.2-ck1.bz2 )
+patchck=`ls -1 patch*ck*` || ( wget http://ck.kolivas.org/patches/3.0/3.3/3.3-ck1/patch-3.3-ck1.bz2 && bzip2 -d patch-3.3-ck1.bz2 )
 cd linux
 if [[ -z `ls -1 $patchck` ]] ; then 
 	cp ../$patchck .
@@ -17,12 +17,13 @@ vers=${vers##'linux-'}
 make oldconfig
 cores=`cat /proc/cpuinfo | sed '/cpu\ cores[\t\:\ ]*/!d' | sed '1q' | sed 's/cpu\ cores\t\:\ //'`
 cpus=`cat /proc/cpuinfo | sed '/physical\ id[\t\:\ ]*/!d' | sed '$!d' | sed 's/physical\ id\t\:\ //'`
-
-make -j$cores
+let "cpus=cpus+1"
+let "total=cores*cpus"
+make -j$total
 make modules_install
 make headers_install 
 emerge aufs3 nvidia-drivers openafs-kernel
-make -j$cores
+make -j$total
 make modules_install
 make headers_install 
 mount /boot

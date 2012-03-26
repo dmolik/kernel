@@ -1,0 +1,7 @@
+#!/bin/bash 
+cores=`cat /proc/cpuinfo | sed '/cpu\ cores[\t\:\ ]*/!d' | sed '1q' | sed 's/cpu\ cores\t\:\ //'`
+cpus=`cat /proc/cpuinfo | sed '/physical\ id[\t\:\ ]*/!d' | sed '$!d' | sed 's/physical\ id\t\:\ //'`
+let "cpus=cpus+1"
+echo "$cpus"
+let "total=$cpus*$cores"
+echo "$total"
