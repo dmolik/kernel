@@ -14,13 +14,13 @@ def ckpatcher():
     data = bz.read()
     f.write(data)
   bz.close()
+  os.chdir('/usr/src/linux')
+  subprocess.call(['patch', '-p1', 'patch-3.3-ck1'])
 
 checkck = os.path.isfile('/usr/src/linux/patch-3.3-ck1')
 
 if not checkck:
   ckpatcher() 
-
-cores = multiprocessing.cpu_count()
 
 os.chdir('/usr/src/linux')
 
@@ -28,7 +28,13 @@ shutil.copy2('/usr/src/.config', '/usr/src/linux')
 subprocess.call(['make', 'oldconfig'])
 shutil.copy2('/usr/src/linux/.config', '/usr/src/')
 
-#retcode = subprocess.Popen(["pwd","-P"], stdout=subprocess.PIPE).communicate()[0]
+cores = multiprocessing.cpu_count()
+subprocess.call(['make', '-j'+str(cores)])
+
+
+retcode = subprocess.Popen(["pwd","-P"], stdout=subprocess.PIPE).communicate()[0]
+version = retcode.strip("/usr/src/linux-")
+
 #print retcode
 #retcode = subprocess.Popen(["make","oldconfig"], stdout=subprocess.PIPE).communicate()[0]
 #print retcode
