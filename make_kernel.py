@@ -15,6 +15,12 @@ def compileKernel():
    subprocess.call(['make', 'modules_install'])
    subprocess.call(['make', 'headers_install'])
    
+def checkProcessor():
+   if platform.processor().lower().find('intel') != -1: 
+      #do intel stuff
+   else:
+      #do amd stuff
+   
 def ckPatcher():
    urllib.urlretrieve ("http://ck.kolivas.org/patches/3.0/3.3/3.3-ck1/patch-3.3-ck1.bz2", "/usr/src/patch-3.3-ck1.bz2")
    bz = bz2.BZ2File('/usr/src/patch-3.3-ck1.bz2', 'r')
