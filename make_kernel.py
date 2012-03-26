@@ -2,34 +2,21 @@
 
 import subprocess
 import urllib
+import bz2
+def ckpatcher
+  urllib.urlretrieve ("http://ck.kolivas.org/patches/3.0/3.3/3.3-ck1/patch-3.3-ck1.bz2", "/usr/src/patch-3.3-ck1.bz2")
+  bz = bz2.BZ2File('/usr/src/patch-3.3-ck1.bz2', 'r')
+  with open('/usr/src/linux/patch-3.3-ck1', 'w') as f:
+    data = bz.read()
+    f.write(data)
+  bz.close()
 
-import os
-import tarfile
-import zipfile
+checkck = os.path.isfile('/usr/src/usr/src/patch-3.3-ck1.bz2')
 
-def extract_file(path, to_directory='.'):
-    if path.endswith('.zip'):
-        opener, mode = zipfile.ZipFile, 'r'
-    elif path.endswith('.tar.gz') or path.endswith('.tgz'):
-        opener, mode = tarfile.open, 'r:gz'
-    elif path.endswith('.tar.bz2') or path.endswith('.tbz'):
-        opener, mode = tarfile.open, 'r:bz2'
-    else: 
-        raise ValueError, "Could not extract `%s` as no appropriate extractor is found" % path
-    
-    cwd = os.getcwd()
-    os.chdir(to_directory)
-    
-    try:
-        file = opener(path, mode)
-        try: file.extractall()
-        finally: file.close()
-    finally:
-        os.chdir(cwd)
-
-urllib.urlretrieve ("http://ck.kolivas.org/patches/3.0/3.3/3.3-ck1/patch-3.3-ck1.bz2", "/usr/src/patch-3.3-ck1.bz2")
+if 
 retcode = subprocess.Popen(["ls","-l1a"], stdout=subprocess.PIPE).communicate()[0]
 print retcode
+
 cd /usr/src
 patchck=`ls -1 patch*ck*` || ( wget http://ck.kolivas.org/patches/3.0/3.3/3.3-ck1/patch-3.3-ck1.bz2 && bzip2 -d patch-3.3-ck1.bz2 )
 cd linux

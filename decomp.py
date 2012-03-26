@@ -2,7 +2,6 @@
 
 import subprocess
 import urllib
-import sys
 import bz2
 
 urllib.urlretrieve ("http://ck.kolivas.org/patches/3.0/3.3/3.3-ck1/patch-3.3-ck1.bz2", "patch-3.3-ck1.bz2")
