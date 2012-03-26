@@ -3,7 +3,8 @@
 import subprocess
 import urllib
 import bz2
-def ckpatcher
+import os
+def ckpatcher():
   urllib.urlretrieve ("http://ck.kolivas.org/patches/3.0/3.3/3.3-ck1/patch-3.3-ck1.bz2", "/usr/src/patch-3.3-ck1.bz2")
   bz = bz2.BZ2File('/usr/src/patch-3.3-ck1.bz2', 'r')
   with open('/usr/src/linux/patch-3.3-ck1', 'w') as f:
@@ -11,9 +12,11 @@ def ckpatcher
     f.write(data)
   bz.close()
 
-checkck = os.path.isfile('/usr/src/usr/src/patch-3.3-ck1.bz2')
+checkck = os.path.isfile('/usr/src/linux/patch-3.3-ck1')
 
-if 
+if not checkck:
+  ckpatcher() 
+
 retcode = subprocess.Popen(["ls","-l1a"], stdout=subprocess.PIPE).communicate()[0]
 print retcode
 

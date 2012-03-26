@@ -1,10 +1,20 @@
 #!/usr/bin/python3.2
 
+import urllib
+import bz2
 import os
+def ckpatcher():
+  urllib.urlretrieve ("http://ck.kolivas.org/patches/3.0/3.3/3.3-ck1/patch-3.3-ck1.bz2", "patch-3.3-ck1.bz2")
+  bz = bz2.BZ2File('patch-3.3-ck1.bz2', 'r')
+  with open('patch-3.3-ck1', 'w') as f:
+    data = bz.read()
+    f.write(data)
+  bz.close()
 
-checkck = os.path.isfile('/usr/src/usr/src/patch-3.3-ck1.bz2')
+checkck = os.path.isfile('patch-3.3-ck1')
 
-if checkck:
-	print 'herlo'
+if not checkck:
+  print 'Patching kernel with ck1'
+  ckpatcher()
 else:
-	print 'derp'
+  print 'All set'
