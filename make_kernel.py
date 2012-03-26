@@ -23,7 +23,7 @@ def ckPatcher():
       f.write(data)
    bz.close()
    os.chdir('/usr/src/linux')
-   subprocess.call(['patch', '-p1', 'patch-3.3-ck1'])
+   subprocess.call(['patch', '-p1', '<', 'patch-3.3-ck1'])
 
 checkck = os.path.isfile('/usr/src/linux/patch-3.3-ck1')
 if not checkck:
@@ -47,7 +47,7 @@ subprocess.call(['mount', '/boot'])
 
 rentval = subprocess.Popen(["pwd","-P"], stdout=subprocess.PIPE).communicate()[0]
 version = rentval.strip("/usr/src/linux-")
-shutil.copy2('/usr/src/linux/x86/boot/bzImage', '/boot/kernel'+version+'ck')
+shutil.copy2('/usr/src/linux/arch/x86/boot/bzImage', '/boot/kernel'+version+'ck')
 
 subprocess.call(['boot-update'])
 
