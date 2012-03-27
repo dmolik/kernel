@@ -17,9 +17,10 @@ def compileKernel():
    
 def checkProcessor():
    if platform.processor().lower().find('intel') != -1: 
-      #do intel stuff
+      subprocess.call(['emerge', '-q', 'microcode_ctl', 'microcode-data' ])
+      subprocess.call(['rc-update', 'add', 'microcode_ctl', 'default'])
    else:
-      #do amd stuff
+      print "TODO: Add kernel config for amd processors"
    
 def ckPatcher():
    urllib.urlretrieve ("http://ck.kolivas.org/patches/3.0/3.3/3.3-ck1/patch-3.3-ck1.bz2", "/usr/src/patch-3.3-ck1.bz2")
@@ -48,13 +49,16 @@ subprocess.call(['make', '-j'+str(cores)])
 compileKernel()
 # emerge packages that depend on the kernel
 subprocess.call(['emerge', '-q', 'aufs3', 'nvidia-drivers', 'openafs-kernel', 'btrfs-progs' ])
+checkProcessor()
 compileKernel()
 
 subprocess.call(['mount', '/boot'])
 
 rentval = subprocess.Popen(["pwd","-P"], stdout=subprocess.PIPE).communicate()[0]
-version = rentval.strip("/usr/src/linux-")
-shutil.copy2('/usr/src/linux/arch/x86/boot/bzImage', '/boot/kernel'+version+'ck')
+version = rentval.strip("/usr/src/linux")
+version = version.strip('\r\n')
+version = '/boot/kernel'+version+'-ck'
+shutil.copy2('/usr/src/linux/arch/x86/boot/bzImage', version)
 
 subprocess.call(['boot-update'])
 
