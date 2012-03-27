@@ -6,6 +6,7 @@ import os
 import multiprocessing
 import shutil
 import subprocess
+import platform
 
 def compileKernel():
    os.chdir('/usr/src/linux')
