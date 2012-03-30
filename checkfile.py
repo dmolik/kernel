@@ -20,6 +20,6 @@ if not checkck:
   ckpatcher()
 else:
   print 'All set'
-
+  print 'herp'
 print multiprocessing.cpu_count()
 
