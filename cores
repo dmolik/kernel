@@ -1,6 +1,9 @@
 #!/bin/bash 
+# Get all the number of cores per cpu
 cores=`cat /proc/cpuinfo | sed '/cpu\ cores[\t\:\ ]*/!d' | sed '1q' | sed 's/cpu\ cores\t\:\ //'`
+# Get the number of cpus
 cpus=`cat /proc/cpuinfo | sed '/physical\ id[\t\:\ ]*/!d' | sed '$!d' | sed 's/physical\ id\t\:\ //'`
+# Remember to start at zero and add one for processors
 let "cpus=cpus+1"
 echo "$cpus"
 let "total=$cpus*$cores"
